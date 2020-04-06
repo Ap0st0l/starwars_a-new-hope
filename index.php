@@ -51,6 +51,8 @@ switch ($action) {
 		$login = $_POST['login'];
 		$password = $_POST['password'];
 		createUser($login, $password);
+		header("Location: index.php");
+
 	}
 		break;
 	
