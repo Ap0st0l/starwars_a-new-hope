@@ -1,0 +1,31 @@
+version: '2'
+services:
+  db:
+    image: mysql:5.7
+    container_name: myshop-mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_USER: root
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3306:3306"
+  php:
+    image: webdevops/php:7.4
+    container_name: myshop-php
+    volumes:
+      - "./:/app"
+    working_dir: '/app'
+  nginx:
+    depends_on:
+      - php
+    image: webdevops/nginx
+    container_name: myshop-nginx
+    environment:
+      WEB_DOCUMENT_ROOT: /app
+      WEB_DOCUMENT_INDEX: index.php
+      WEB_PHP_SOCKET: php:9000
+    volumes:
+      - "./:/app"
+    ports:
+      - "80:80"
